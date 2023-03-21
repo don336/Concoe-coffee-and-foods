@@ -9,7 +9,7 @@ This is a coffee application that uses React, Node.js, Material-UI (Mui), MongoD
 3. Create a `.env` file in the root directory and the following environment variables:
    - PORT = portnumber
    - DB_URL = mongoUrl
-4. Start the application by running the following command: `npm start`
+4. Start the development Server by running the following command: `npm run dev`
 
 ## Dependencies
 
@@ -23,6 +23,7 @@ The following dependencies are used in this project:
 
 ## Features
 
+- User Authentication
 - View coffee variaties
 - Place orders
 - Manage inventory
@@ -31,6 +32,10 @@ The following dependencies are used in this project:
 ## Contributing
 
 If you would like to contribute to this project, please fork the repository and create a pull request.
+
+## Note
+
+The Application is still uder production and hopefully it shall be complete by the end of April
 
 ## License
 
