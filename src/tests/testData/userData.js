@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import User from "../../model/user.js";
+import User from "../../model/user";
 
 const uid1 = new mongoose.Types.ObjectId();
 const uid2 = new mongoose.Types.ObjectId();

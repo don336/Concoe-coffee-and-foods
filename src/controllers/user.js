@@ -83,6 +83,7 @@ class UserController {
       const { _id, username } = existingUser;
 
       return res.status(201).json({
+        message: "You're logged in",
         token,
         user: {
           _id,
