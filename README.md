@@ -8,7 +8,7 @@ This is a coffee application that uses React, Node.js, Material-UI (Mui), MongoD
 2. Install dependencies by running the following comand in the project directory:`npm install`
 3. Create a `.env` file in the root directory and the following environment variables:
    - PORT = portnumber
-   - DB_URL =  mongoUrl
+   - DB_URL = mongoUrl
 4. Start the application by running the following command: `npm start`
 
 ## Dependencies
@@ -34,4 +34,4 @@ If you would like to contribute to this project, please fork the repository and 
 
 ## License
 
-The project is licensed under the MIT License. See the LICENSE file for more information.
+The project is licensed under the ISC License. See the LICENSE file for more information.
