@@ -34,13 +34,13 @@ class UserController {
         email,
         password: encryptedPwd,
       });
-      const token = await Jwt.sign({ _id: user.id }, process.env.TOKEN_SECRET);
+      const accessToken = await Jwt.sign({ _id: user.id }, process.env.TOKEN_SECRET);
 
-      res.cookie("token", token, { expire: new Date() + 1 });
+      res.cookie("token", accessToken, { expire: new Date() + 1 });
 
       return res.status(201).json({
         message: "User Registered!",
-        token,
+        accessToken,
         user,
       });
     } catch (error) {
@@ -76,15 +76,15 @@ class UserController {
         });
       }
 
-      const token = await Jwt.sign({ _id: existingUser.id }, process.env.TOKEN_SECRET);
+      const accessToken = await Jwt.sign({ _id: existingUser.id }, process.env.TOKEN_SECRET);
 
-      res.cookie("token", token, { expire: new Date() + 1 });
+      res.cookie("token", accessToken, { expire: new Date() + 1 });
 
       const { _id, username } = existingUser;
 
       return res.status(201).json({
         message: "You're logged in",
-        token,
+        accessToken,
         user: {
           _id,
           username,
