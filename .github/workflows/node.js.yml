@@ -27,7 +27,7 @@ jobs:
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v1.3
         with:
-          envkey_PORT: 8000
+          PORT: 8000
           TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }}
           DB_CONNECT: ${{ secrets.DB_CONNECT }}
           directory: config
