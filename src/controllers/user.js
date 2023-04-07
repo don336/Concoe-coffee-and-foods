@@ -34,7 +34,10 @@ class UserController {
         email,
         password: encryptedPwd,
       });
-      const accessToken = await Jwt.sign({ _id: user.id }, process.env.TOKEN_SECRET);
+      const accessToken = await Jwt.sign(
+        { _id: user.id },
+        process.env.TOKEN_SECRET
+      );
 
       res.cookie("token", accessToken, { expire: new Date() + 1 });
 
@@ -76,7 +79,10 @@ class UserController {
         });
       }
 
-      const accessToken = await Jwt.sign({ _id: existingUser.id }, process.env.TOKEN_SECRET);
+      const accessToken = await Jwt.sign(
+        { _id: existingUser.id },
+        process.env.TOKEN_SECRET
+      );
 
       res.cookie("token", accessToken, { expire: new Date() + 1 });
 
