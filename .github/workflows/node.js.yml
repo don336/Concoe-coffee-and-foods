@@ -31,7 +31,7 @@ jobs:
           TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }}
           DB_CONNECT: ${{ secrets.DB_CONNECT }}
           directory: config
-          file_name: test.env
+          file_name: .env.example
 
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.8.0
@@ -39,5 +39,5 @@ jobs:
           mongodb-version: ${{ matrix.mongodb-version }}
 
       - run: npm ci
-      # - run: npm run test
+      - run: npm run test
       - run: npm run build
