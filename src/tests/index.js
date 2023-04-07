@@ -10,8 +10,8 @@ export default class testBase {
   static get(url) {
     return appInstance.get(`${version}${url}`);
   }
-  static patch(url) {
-    return appInstance.patch(`${version}${url}`);
+  static put(url) {
+    return appInstance.put(`${version}${url}`);
   }
   static delete(url) {
     return appInstance.delete(`${version}${url}`);
