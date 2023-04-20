@@ -80,7 +80,11 @@ class UserController {
       }
 
       const accessToken = await Jwt.sign(
-        { _id: existingUser.id },
+        {
+          _id: existingUser.id,
+          email: existingUser.email,
+          username: existingUser.username,
+        },
         process.env.TOKEN_SECRET
       );
 
