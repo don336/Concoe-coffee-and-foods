@@ -5,11 +5,7 @@ import { errors } from "celebrate";
 import routes from "./routes/index";
 connect();
 const app = express();
-app.use(
-  cors({
-    origin: "https://personal-server-3fvv.onrender.com",
-  })
-);
+app.use(cors());
 app.use(express.json());
 app.use(errors());
 app.use(routes);
