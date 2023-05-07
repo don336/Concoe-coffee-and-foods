@@ -108,6 +108,95 @@ class UserController {
       });
     }
   }
+  static async getAccountInfo(req, res) {
+    try {
+      const { id } = req.params;
+      const user = await User.findById({ _id: id });
+
+      if (!user) {
+        return res.status(400).json({
+          message: "User not Found",
+        });
+      }
+      const { name, email, Bio, dateCreated, role } = user;
+      return res.status(200).json({
+        message: "User found",
+        user: {
+          name,
+          email,
+          Bio,
+          dateCreated,
+          role,
+        },
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "server error",
+        error: error.message,
+      });
+    }
+  }
+
+  static async updateAccountInfo(req, res) {
+    const { id } = req.params;
+    const user = await User.findById({ _id: id });
+    if (!user) {
+      return res.status(400).json({
+        message: "User not Found",
+      });
+    }
+
+    try {
+      const { name, username, email, password, Bio } = req.body;
+
+      const updatedUser = await User.findByIdAndUpdate(
+        { _id: id },
+        {
+          $set: {
+            name,
+            username,
+            email,
+            password,
+            Bio,
+          },
+        },
+        { new: true }
+      );
+
+      return res.status(200).json({
+        message: "User Updated",
+        updatedUser,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "server error",
+        error: error.message,
+      });
+    }
+  }
+  static async deleteAccount(req, res) {
+    const { id } = req.params;
+    const user = await User.findById({ _id: id });
+    if (!user) {
+      return res.status(400).json({
+        message: "User not Found",
+      });
+    }
+
+    try {
+      const updatedUser = await User.findByIdAndDelete({ _id: id });
+
+      return res.status(200).json({
+        message: "User Deleted",
+        updatedUser,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "server error",
+        error: error.message,
+      });
+    }
+  }
 }
 
 export default UserController;
