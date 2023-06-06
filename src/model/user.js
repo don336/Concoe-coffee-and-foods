@@ -20,7 +20,6 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
   },
-
   role: {
     type: String,
     default: "user",
@@ -28,7 +27,7 @@ const userSchema = new mongoose.Schema({
   },
 
   Bio: {
-    type: String,
+    type: String, 
   },
 
   dateCreated: {

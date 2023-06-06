@@ -82,6 +82,7 @@ class UserController {
       const accessToken = await Jwt.sign(
         {
           _id: existingUser.id,
+          name: existingUser.name,
           email: existingUser.email,
           username: existingUser.username,
         },
@@ -157,7 +158,6 @@ class UserController {
             username,
             email,
             password,
-            Bio,
           },
         },
         { new: true }
