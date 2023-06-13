@@ -35,7 +35,11 @@ class UserController {
         password: encryptedPwd,
       });
       const accessToken = await Jwt.sign(
-        { _id: user.id },
+        { 
+        _id: user.id,
+          name: user.name,
+          email: user.email,
+          username: user.username, },
         process.env.TOKEN_SECRET
       );
 
