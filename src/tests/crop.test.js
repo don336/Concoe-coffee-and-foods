@@ -20,7 +20,7 @@ describe("Crop Management", function () {
     const auth = await testBase.post("/auth/signup").send(user);
     const crop = await testBase
       .post("/crop/")
-      .set("Authentication", auth.body.accessToken)
+      .set("Authorization", auth.body.accessToken)
       .send(req);
     const id = crop.body.crop._id;
     cropId = id;
@@ -46,12 +46,12 @@ describe("Crop Management", function () {
     const token = login.body.accessToken;
     // const newReq = await testBase
     //   .post(`/crop/`)
-    //   .set("Authentication", token)
+    //   .set("Authorization", token)
     //   .send(req);
     // const id = newReq.body.crop._id;
     const res = await testBase
       .get(`/crop/${cropId}`)
-      .set("Authentication", token)
+      .set("Authorization", token)
       .send({});
 
     expect(res.status).toBe(200);
@@ -65,7 +65,7 @@ describe("Crop Management", function () {
     const token = login.body.accessToken;
     const res = await testBase
       .get(`/crop/642fe58fd2acc14754dee091`)
-      .set("Authentication", token)
+      .set("Authorization", token)
       .send({});
 
     expect(res.status).toBe(400);
@@ -80,7 +80,7 @@ describe("Crop Management", function () {
 
     const res = await testBase
       .post("/crop/")
-      .set("Authentication", token)
+      .set("Authorization", token)
       .send({});
 
     expect(res.status).toBe(422);
@@ -96,7 +96,7 @@ describe("Crop Management", function () {
 
     const res = await testBase
       .put("/crop/642fe58fd2acc14754dee091")
-      .set("Authentication", token)
+      .set("Authorization", token)
       .send(req);
     expect(res.status).toBe(400);
     expect(res.body.message).toBe("Crop Not found");
@@ -110,7 +110,7 @@ describe("Crop Management", function () {
     const token = login.body.accessToken;
     const res = await testBase
       .put(`/crop/${cropId}`)
-      .set("Authentication", token)
+      .set("Authorization", token)
       .send(req);
     expect(res.status).toBe(200);
     expect(res.body.message).toBe("Crop Updated!");
@@ -124,7 +124,7 @@ describe("Crop Management", function () {
     const token = login.body.accessToken;
     const res = await testBase
       .delete(`/crop/642fe58fd2acc14754dee091`)
-      .set("Authentication", token)
+      .set("Authorization", token)
       .send(req);
     expect(res.status).toBe(400);
     expect(res.body.message).toBe("No crop Found");
@@ -138,7 +138,7 @@ describe("Crop Management", function () {
     const token = login.body.accessToken;
     const res = await testBase
       .delete(`/crop/${cropId}`)
-      .set("Authentication", token)
+      .set("Authorization", token)
       .send(req);
     expect(res.status).toBe(200);
     expect(res.body.message).toBe("Crop deleted!");
