@@ -40,9 +40,9 @@ class cropController {
   static async postCrop(req, res) {
     try {
       const { _id } = req.user;
-      const { cropType, season, Acreage, expectedYield } = req.body;
+      const { cropType, season,acreage, expectedYields } = req.body;
 
-      if (!cropType || !season || !Acreage || !expectedYield) {
+      if (!cropType || !season || !acreage || !expectedYields) {
         return res.status(422).json({
           message: "Please fillout all the required Fields",
         });
@@ -53,8 +53,8 @@ class cropController {
         userId: _id,
         cropType,
         season,
-        Acreage,
-        expectedYield,
+        acreage,
+        expectedYields,
       });
 
       return res.status(201).json({

@@ -15,11 +15,11 @@ const cropSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  Acreage: {
+  acreage: {
     type: String,
     required: true,
   },
-  expectedYield: {
+  expectedYields: {
     type: String,
     required: true,
   },
