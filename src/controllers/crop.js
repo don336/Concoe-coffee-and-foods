@@ -40,7 +40,7 @@ class cropController {
   static async postCrop(req, res) {
     try {
       const { _id } = req.user;
-      const { cropType, season,acreage, expectedYields } = req.body;
+      const { cropType, season, acreage, expectedYields } = req.body;
 
       if (!cropType || !season || !acreage || !expectedYields) {
         return res.status(422).json({
@@ -71,7 +71,7 @@ class cropController {
   static async updateCrop(req, res) {
     try {
       const { id } = req.params;
-      const { cropType, season, Acreage, expectedYield } = req.body;
+      const { cropType, season, acreage, expectedYields } = req.body;
 
       const foundCrop = await Crop.findById({ _id: id });
 
@@ -87,8 +87,8 @@ class cropController {
           $set: {
             cropType,
             season,
-            Acreage,
-            expectedYield,
+            acreage,
+            expectedYields,
           },
         },
         { new: true }
