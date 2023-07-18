@@ -5,6 +5,10 @@ class cropController {
   static async getCrops(req, res) {
     try {
       const crops = await Crop.find();
+
+      if (crops.length !== 1) {
+        return res.status(400).json({ message: "No Crop Found" });
+      }
       return res.status(200).json({
         message: "Expected Crops",
         crops,

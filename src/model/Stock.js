@@ -1,32 +1,25 @@
 import mongoose from "mongoose";
 
-const stockSchema = mongoose.Schema({
-  cropType: {
+const stockSchema = new mongoose.Schema({
+  name: {
     type: String,
     required: true,
   },
-
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+  quantity: {
+    type: Number,
+    required: true,
   },
-
-  season: {
+  unit: {
     type: String,
     required: true,
   },
-  acreage: {
-    type: String,
+  price: {
+    type: Number,
     required: true,
   },
-  expectedYields: {
-    type: String,
-    required: true,
-  },
-  dateCreated: {
+  dateAdded: {
     type: Date,
     default: Date.now,
-    immutable: true,
   },
 });
 

@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import testBase from "./index";
-import Crop from "../model/Crop";
 
 describe("Crop Management", function () {
   const req = {
