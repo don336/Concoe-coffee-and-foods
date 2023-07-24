@@ -1,33 +1,32 @@
 import mongoose from "mongoose";
-
-const saleSchema = mongoose.Schema({
-  cropType: {
+import { Schema } from "mongoose";
+const salesSchema = new mongoose.Schema({
+  orderNumber: {
     type: String,
     required: true,
+    unique: true,
   },
-
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
-
-  season: {
-    type: String,
+  customerId: {
+    type: Schema.Types.ObjectId,
+    ref: "Customers",
     required: true,
   },
-  acreage: {
-    type: String,
+  products: [
+    {
+      name: String,
+      quantity: Number,
+      price: Number,
+    },
+  ],
+  totalAmount: {
+    type: Number,
     required: true,
   },
-  expectedYields: {
-    type: String,
-    required: true,
-  },
-  dateCreated: {
+  date: {
     type: Date,
     default: Date.now,
     immutable: true,
   },
 });
 
-export default mongoose.model("Sales", saleSchema);
+export default mongoose.model("Sales", salesSchema);
