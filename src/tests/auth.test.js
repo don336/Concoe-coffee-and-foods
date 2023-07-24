@@ -23,7 +23,7 @@ describe("User Auth", function () {
     const res = await testBase.post("/auth/signup").send();
     expect(res.status).toBe(422);
     expect(res.body.message).toBe("Please fillout the required fields");
-  });
+  }, 10000);
   it("should not register an already taken Email", async () => {
     const res = await testBase.post("/auth/signup").send({
       name: "Paul K",

@@ -1,33 +1,25 @@
 import mongoose from "mongoose";
 
-const customerSchema = mongoose.Schema({
-  cropType: {
+const customerSchema = new mongoose.Schema({
+  name: {
     type: String,
     required: true,
   },
-
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
-
-  season: {
+  email: {
     type: String,
     required: true,
+    unique: true,
+    trim: true,
+    lowercase: true,
   },
-  acreage: {
-    type: String,
+  dateOfBirth: {
+    type: Date,
     required: true,
   },
-  expectedYields: {
-    type: String,
-    required: true,
-  },
-  dateCreated: {
+  createdAt: {
     type: Date,
     default: Date.now,
-    immutable: true,
   },
 });
 
-export default mongoose.model("Customer", customerSchema);
+export default mongoose.model("Customers", customerSchema);

@@ -1,13 +1,14 @@
 import mongoose from "mongoose";
-
+import { Schema } from "mongoose";
 const salesSchema = new mongoose.Schema({
   orderNumber: {
     type: String,
     required: true,
     unique: true,
   },
-  customerName: {
-    type: String,
+  customerId: {
+    type: Schema.Types.ObjectId,
+    ref: "Customers",
     required: true,
   },
   products: [

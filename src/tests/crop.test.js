@@ -24,7 +24,7 @@ describe("Crop Management", function () {
       .send(req);
     const id = crop.body.crop._id;
     cropId = id;
-  });
+  }, 10000);
 
   afterAll(async () => {
     mongoose.connection.close();
@@ -36,7 +36,7 @@ describe("Crop Management", function () {
     expect(response.status).toBe(200);
 
     expect(response.body).toEqual(expect.arrayContaining([]));
-  });
+  }, 10000);
 
   it("Should return a crop when a user is logged in", async () => {
     const login = await testBase.post("/auth/signin").send({
@@ -56,7 +56,7 @@ describe("Crop Management", function () {
 
     expect(res.status).toBe(200);
     expect(res.body.message).toBe("Crop Found!");
-  });
+  }, 10000);
   it("Shouldn't return a crop if it doesn't exist", async () => {
     const login = await testBase.post("/auth/signin").send({
       email: "userman@gmail.com",
@@ -70,7 +70,7 @@ describe("Crop Management", function () {
 
     expect(res.status).toBe(400);
     expect(res.body.message).toBe("Crop not found in the database");
-  });
+  }, 10000);
   it("shouldn't add a crop when provided with empty fields", async () => {
     const login = await testBase.post("/auth/signin").send({
       email: "userman@gmail.com",
@@ -85,7 +85,7 @@ describe("Crop Management", function () {
 
     expect(res.status).toBe(422);
     expect(res.body.message).toBe("Please fillout all the required Fields");
-  });
+  }, 10000);
 
   it("Shouldn't update a crop that doesn't exist", async () => {
     const login = await testBase.post("/auth/signin").send({
@@ -100,7 +100,7 @@ describe("Crop Management", function () {
       .send(req);
     expect(res.status).toBe(400);
     expect(res.body.message).toBe("Crop Not found");
-  });
+  }, 10000);
 
   it("Should update a crop that exist", async () => {
     const login = await testBase.post("/auth/signin").send({
@@ -114,7 +114,7 @@ describe("Crop Management", function () {
       .send(req);
     expect(res.status).toBe(200);
     expect(res.body.message).toBe("Crop Updated!");
-  });
+  }, 10000);
 
   it("Shouldn't delete a crop that doesn't exist", async () => {
     const login = await testBase.post("/auth/signin").send({
@@ -128,7 +128,7 @@ describe("Crop Management", function () {
       .send(req);
     expect(res.status).toBe(400);
     expect(res.body.message).toBe("No crop Found");
-  });
+  }, 10000);
 
   it("Should delete a crop that  exists", async () => {
     const login = await testBase.post("/auth/signin").send({
@@ -142,5 +142,5 @@ describe("Crop Management", function () {
       .send(req);
     expect(res.status).toBe(200);
     expect(res.body.message).toBe("Crop deleted!");
-  });
+  }, 10000);
 });

@@ -3,7 +3,10 @@ import Sales from "../model/Sales";
 class SalesController {
   static async getSales(req, res) {
     try {
-      const foundSales = await Sales.find();
+      const foundSales = await Sales.find().populate({
+        path: "customerId",
+        model: "Customers",
+      });
 
       if (foundSales.length === 0) {
         return res.status(400).json({ message: "No Sales Found" });
@@ -23,7 +26,10 @@ class SalesController {
   static async getSale(req, res) {
     try {
       const { id } = req.params;
-      const sale = Sales.findById({ _id: id });
+      const sale = Sales.findById({ _id: id }).populate({
+        path: "customerId",
+        model: "Customers",
+      });
       if (!sale) {
         return res.status(400).json({ message: "Sale not found" });
       }
