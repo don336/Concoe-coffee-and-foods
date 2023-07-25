@@ -5,7 +5,7 @@ import Crop from '../model/Crop';
 class cropController {
   static async getCrops(req, res) {
     try {
-      const crops = await Crop.find();
+      const crops = await Crop.find().populate('userId');
 
       if (crops.length === 0) {
         return res.status(404).json({ message: 'No Crops Found' });
