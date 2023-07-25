@@ -1,26 +1,26 @@
-import Jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-import { v4 as uuidv4 } from "uuid";
-import User from "../model/user";
+import Jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import { v4 as uuidv4 } from 'uuid';
+import User from '../model/user';
 
 class UserController {
   static async registeration(req, res) {
     const { name, username, email, password } = req.body;
     if (!name || !username || !email || !password) {
       return res.status(422).json({
-        message: "Please fillout the required fields",
+        message: 'Please fillout the required fields',
       });
     }
     const existingEmail = await User.findOne({ email });
 
     if (existingEmail) {
-      return res.status(409).json({ message: "Email has been taken" });
+      return res.status(409).json({ message: 'Email has been taken' });
     }
 
     const existingUsername = await User.findOne({ username });
 
     if (existingUsername) {
-      return res.status(409).json({ message: "Username has been taken" });
+      return res.status(409).json({ message: 'Username has been taken' });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -28,25 +28,26 @@ class UserController {
 
     try {
       const user = await User.create({
-        id: uuidv4(),
+        userId: uuidv4(),
         name,
         username,
         email,
         password: encryptedPwd,
       });
       const accessToken = await Jwt.sign(
-        { 
-        _id: user.id,
+        {
+          userId: user.userId,
           name: user.name,
           email: user.email,
-          username: user.username, },
+          username: user.username,
+        },
         process.env.TOKEN_SECRET
       );
 
-      res.cookie("token", accessToken, { expire: new Date() + 1 });
+      res.cookie('token', accessToken, { expire: new Date() + 1 });
 
       return res.status(201).json({
-        message: "User Registered!",
+        message: 'User Registered!',
         accessToken,
         user,
       });
@@ -63,7 +64,7 @@ class UserController {
 
       if (!email || !password) {
         return res.status(422).json({
-          message: "Please fillout all necessary fields",
+          message: 'Please fillout all necessary fields',
         });
       }
 
@@ -71,7 +72,7 @@ class UserController {
 
       if (!existingUser) {
         return res.status(400).json({
-          message: "User not found please register and try again",
+          message: 'User not found please register and try again',
         });
       }
 
@@ -79,13 +80,13 @@ class UserController {
 
       if (!passVerif) {
         return res.status(401).json({
-          message: "Please Check Password and try again",
+          message: 'Please Check Password and try again',
         });
       }
 
       const accessToken = await Jwt.sign(
         {
-          _id: existingUser.id,
+          userId: existingUser.userId,
           name: existingUser.name,
           email: existingUser.email,
           username: existingUser.username,
@@ -93,22 +94,22 @@ class UserController {
         process.env.TOKEN_SECRET
       );
 
-      res.cookie("token", accessToken, { expire: new Date() + 1 });
+      res.cookie('token', accessToken, { expire: new Date() + 1 });
 
-      const { _id, username } = existingUser;
+      const { userId, username } = existingUser;
 
       return res.status(201).json({
         message: "You're logged in",
         accessToken,
         user: {
-          _id,
+          userId,
           username,
           email,
         },
       });
     } catch (error) {
       return res.status(500).json({
-        message: "server error",
+        message: 'server error',
         error: error.message,
       });
     }
@@ -116,16 +117,16 @@ class UserController {
   static async getAccountInfo(req, res) {
     try {
       const { id } = req.params;
-      const user = await User.findById({ _id: id });
+      const user = await User.findById({ userId: id });
 
       if (!user) {
         return res.status(400).json({
-          message: "User not Found",
+          message: 'User not Found',
         });
       }
       const { name, email, Bio, dateCreated, role } = user;
       return res.status(200).json({
-        message: "User found",
+        message: 'User found',
         user: {
           name,
           email,
@@ -136,7 +137,7 @@ class UserController {
       });
     } catch (error) {
       return res.status(500).json({
-        message: "server error",
+        message: 'server error',
         error: error.message,
       });
     }
@@ -144,18 +145,18 @@ class UserController {
 
   static async updateAccountInfo(req, res) {
     const { id } = req.params;
-    const user = await User.findById({ _id: id });
+    const user = await User.findById({ userId: id });
     if (!user) {
       return res.status(400).json({
-        message: "User not Found",
+        message: 'User not Found',
       });
     }
 
     try {
-      const { name, username, email, password, Bio } = req.body;
+      const { name, username, email, password } = req.body;
 
       const updatedUser = await User.findByIdAndUpdate(
-        { _id: id },
+        { userId: id },
         {
           $set: {
             name,
@@ -168,35 +169,35 @@ class UserController {
       );
 
       return res.status(200).json({
-        message: "User Updated",
+        message: 'User Updated',
         updatedUser,
       });
     } catch (error) {
       return res.status(500).json({
-        message: "server error",
+        message: 'server error',
         error: error.message,
       });
     }
   }
   static async deleteAccount(req, res) {
     const { id } = req.params;
-    const user = await User.findById({ _id: id });
+    const user = await User.findById({ userId: id });
     if (!user) {
       return res.status(400).json({
-        message: "User not Found",
+        message: 'User not Found',
       });
     }
 
     try {
-      const updatedUser = await User.findByIdAndDelete({ _id: id });
+      const updatedUser = await User.findByIdAndDelete({ userId: id });
 
       return res.status(200).json({
-        message: "User Deleted",
+        message: 'User Deleted',
         updatedUser,
       });
     } catch (error) {
       return res.status(500).json({
-        message: "server error",
+        message: 'server error',
         error: error.message,
       });
     }

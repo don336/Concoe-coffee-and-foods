@@ -1,16 +1,18 @@
-import mongoose from "mongoose";
-
-const cropSchema = mongoose.Schema({
+import { Schema, model } from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
+const cropSchema = Schema({
+  _id: {
+    type: String,
+    default: uuidv4,
+  },
   cropType: {
     type: String,
     required: true,
   },
-
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    type: Schema.Types.ObjectId,
+    ref: 'User',
   },
-
   season: {
     type: String,
     required: true,
@@ -30,4 +32,4 @@ const cropSchema = mongoose.Schema({
   },
 });
 
-export default mongoose.model("Crop", cropSchema);
+export default model('Crop', cropSchema);

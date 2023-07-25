@@ -1,19 +1,19 @@
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
+Object.defineProperty(exports, '__esModule', {
+  value: true,
 });
-exports["default"] = void 0;
+exports['default'] = void 0;
 var feedbackSchema = new mongoose.connect({
   title: {
-    type: String
+    type: String,
   },
   description: {
-    type: String
+    type: String,
   },
   rating: {
-    type: Number
-  }
+    type: Number,
+  },
 });
-var _default = mongoose.model("FeedBack", feedbackSchema);
-exports["default"] = _default;
+var _default = mongoose.model('FeedBack', feedbackSchema);
+exports['default'] = _default;

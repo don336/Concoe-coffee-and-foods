@@ -1,6 +1,10 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const stockSchema = new mongoose.Schema({
+  stockId: {
+    type: String,
+    required: true,
+  },
   name: {
     type: String,
     required: true,
@@ -23,4 +27,4 @@ const stockSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model("Stock", stockSchema);
+export default mongoose.model('Stock', stockSchema);

@@ -1,23 +1,23 @@
-import Sales from "../model/Sales";
-
+import Sales from '../model/Sales';
+import { v4 as uuidv4 } from 'uuid';
 class SalesController {
   static async getSales(req, res) {
     try {
       const foundSales = await Sales.find().populate({
-        path: "customerId",
-        model: "Customers",
+        path: 'customerId',
+        model: 'Customers',
       });
 
       if (foundSales.length === 0) {
-        return res.status(400).json({ message: "No Sales Found" });
+        return res.status(400).json({ message: 'No Sales Found' });
       }
 
       return res
         .status(200)
-        .json({ message: "Sales Found", Sales: foundSales });
+        .json({ message: 'Sales Found', Sales: foundSales });
     } catch (error) {
       return res.status(500).json({
-        message: "Server Error",
+        message: 'Server Error',
         Error: error.message,
       });
     }
@@ -26,18 +26,18 @@ class SalesController {
   static async getSale(req, res) {
     try {
       const { id } = req.params;
-      const sale = Sales.findById({ _id: id }).populate({
-        path: "customerId",
-        model: "Customers",
+      const sale = await Sales.findById({ _id: id }).populate({
+        path: 'customerId',
+        model: 'Customers',
       });
       if (!sale) {
-        return res.status(400).json({ message: "Sale not found" });
+        return res.status(400).json({ message: 'Sale not found' });
       }
 
-      return res.status(200).json({ message: "Sale Found", Sales: sale });
+      return res.status(200).json({ message: 'Sale Found', Sales: sale });
     } catch (error) {
       return res.status(500).json({
-        message: "Server Error",
+        message: 'Server Error',
         Error: error.message,
       });
     }
@@ -49,7 +49,7 @@ class SalesController {
 
       if (!orderNumber || !customerName || !products) {
         return res.status(409).json({
-          message: "All fields are required",
+          message: 'All fields are required',
         });
       }
 
@@ -57,7 +57,7 @@ class SalesController {
         const { name, price, quantity } = product;
 
         if (!name || !price || !quantity) {
-          throw new Error("All fields are required");
+          throw new Error('All fields are required');
         }
 
         return {
@@ -72,6 +72,7 @@ class SalesController {
       }, 0);
 
       const sale = await Sales.create({
+        saleId: uuidv4(),
         orderNumber,
         customerName,
         products: validProducts,
@@ -79,12 +80,12 @@ class SalesController {
       });
 
       return res.status(201).json({
-        message: "Sale Added",
+        message: 'Sale Added',
         sale: sale,
       });
     } catch (error) {
       return res.status(500).json({
-        message: "Server Error",
+        message: 'Server Error',
         error: error.message,
       });
     }
@@ -97,14 +98,14 @@ class SalesController {
       const sale = await Sales.findById(id);
 
       if (!sale) {
-        return res.status(400).json({ message: "Sale Not Found" });
+        return res.status(400).json({ message: 'Sale Not Found' });
       }
 
       const { orderNumber, customerName, products, totalAmount } = req.body;
 
       if (!orderNumber && !customerName && !products && !totalAmount) {
         return res.status(409).json({
-          message: "No valid update data",
+          message: 'No valid update data',
         });
       }
 
@@ -120,7 +121,7 @@ class SalesController {
 
           if (!name || !price || !quantity) {
             return res.status(409).json({
-              message: "All fields are required",
+              message: 'All fields are required',
             });
           }
 
@@ -140,12 +141,12 @@ class SalesController {
       const updatedSale = await sale.save();
 
       return res.status(200).json({
-        message: "Sale Updated",
+        message: 'Sale Updated',
         updatedSale,
       });
     } catch (error) {
       return res.status(500).json({
-        message: "Server Error",
+        message: 'Server Error',
         Error: error.message,
       });
     }
@@ -158,18 +159,18 @@ class SalesController {
       const sale = Sales.findById({ _id: id });
 
       if (!sale) {
-        return res.status(400).json({ message: "Sale not found" });
+        return res.status(400).json({ message: 'Sale not found' });
       }
 
       const deletedSale = await Sales.findByIdAndDelete({ _id: id });
 
       return res.status(200).json({
-        message: "Sale Deleted",
+        message: 'Sale Deleted',
         deletedSale,
       });
     } catch (error) {
       return res.status(500).json({
-        message: "Server Error",
+        message: 'Server Error',
         Error: error.message,
       });
     }
