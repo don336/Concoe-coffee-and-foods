@@ -1,28 +1,28 @@
-import mongoose from "mongoose";
-import testBase from "./index";
+import mongoose from 'mongoose';
+import testBase from './index';
 
-describe("Crop Management", function () {
+describe('Crop Management', function () {
   const req = {
-    cropType: "crop1",
-    season: "crop season",
-    acreage: "1000",
-    expectedYields: "1000",
+    cropType: 'crop1',
+    season: 'crop season',
+    acreage: '1000',
+    expectedYields: '1000',
   };
 
   const user = {
-    name: "userman",
-    username: "userman111",
-    email: "userman@gmail.com",
-    password: "password",
+    name: 'userman',
+    username: 'userman111',
+    email: 'userman@gmail.com',
+    password: 'password',
   };
   let cropId;
   beforeAll(async () => {
-    const auth = await testBase.post("/auth/signup").send(user);
+    const auth = await testBase.post('/auth/signup').send(user);
     const crop = await testBase
-      .post("/crop/")
-      .set("Authorization", auth.body.accessToken)
+      .post('/crop/')
+      .set('Authorization', auth.body.accessToken)
       .send(req);
-    const id = crop.body.crop._id;
+    const id = crop.body.crop.cropId;
     cropId = id;
   }, 10000);
 
@@ -30,117 +30,117 @@ describe("Crop Management", function () {
     mongoose.connection.close();
   });
 
-  it("it should return all registered crops", async () => {
-    const response = await testBase.get("/crop/").send({});
+  it('it should return all registered crops', async () => {
+    const response = await testBase.get('/crop/').send({});
 
     expect(response.status).toBe(200);
 
     expect(response.body).toEqual(expect.arrayContaining([]));
   }, 10000);
 
-  it("Should return a crop when a user is logged in", async () => {
-    const login = await testBase.post("/auth/signin").send({
-      email: "userman@gmail.com",
-      password: "password",
+  it('Should return a crop when a user is logged in', async () => {
+    const login = await testBase.post('/auth/signin').send({
+      email: 'userman@gmail.com',
+      password: 'password',
     });
     const token = login.body.accessToken;
     // const newReq = await testBase
     //   .post(`/crop/`)
     //   .set("Authorization", token)
     //   .send(req);
-    // const id = newReq.body.crop._id;
+    // const id = newReq.body.crop.cropId;
     const res = await testBase
       .get(`/crop/${cropId}`)
-      .set("Authorization", token)
+      .set('Authorization', token)
       .send({});
 
     expect(res.status).toBe(200);
-    expect(res.body.message).toBe("Crop Found!");
+    expect(res.body.message).toBe('Crop Found!');
   }, 10000);
   it("Shouldn't return a crop if it doesn't exist", async () => {
-    const login = await testBase.post("/auth/signin").send({
-      email: "userman@gmail.com",
-      password: "password",
+    const login = await testBase.post('/auth/signin').send({
+      email: 'userman@gmail.com',
+      password: 'password',
     });
     const token = login.body.accessToken;
     const res = await testBase
       .get(`/crop/642fe58fd2acc14754dee091`)
-      .set("Authorization", token)
+      .set('Authorization', token)
       .send({});
 
     expect(res.status).toBe(400);
-    expect(res.body.message).toBe("Crop not found in the database");
+    expect(res.body.message).toBe('Crop not found in the database');
   }, 10000);
   it("shouldn't add a crop when provided with empty fields", async () => {
-    const login = await testBase.post("/auth/signin").send({
-      email: "userman@gmail.com",
-      password: "password",
+    const login = await testBase.post('/auth/signin').send({
+      email: 'userman@gmail.com',
+      password: 'password',
     });
     const token = login.body.accessToken;
 
     const res = await testBase
-      .post("/crop/")
-      .set("Authorization", token)
+      .post('/crop/')
+      .set('Authorization', token)
       .send({});
 
     expect(res.status).toBe(422);
-    expect(res.body.message).toBe("Please fillout all the required Fields");
+    expect(res.body.message).toBe('Please fillout all the required Fields');
   }, 10000);
 
   it("Shouldn't update a crop that doesn't exist", async () => {
-    const login = await testBase.post("/auth/signin").send({
-      email: "userman@gmail.com",
-      password: "password",
+    const login = await testBase.post('/auth/signin').send({
+      email: 'userman@gmail.com',
+      password: 'password',
     });
     const token = login.body.accessToken;
 
     const res = await testBase
-      .put("/crop/642fe58fd2acc14754dee091")
-      .set("Authorization", token)
+      .put('/crop/642fe58fd2acc14754dee091')
+      .set('Authorization', token)
       .send(req);
     expect(res.status).toBe(400);
-    expect(res.body.message).toBe("Crop Not found");
+    expect(res.body.message).toBe('Crop Not found');
   }, 10000);
 
-  it("Should update a crop that exist", async () => {
-    const login = await testBase.post("/auth/signin").send({
-      email: "userman@gmail.com",
-      password: "password",
+  it('Should update a crop that exist', async () => {
+    const login = await testBase.post('/auth/signin').send({
+      email: 'userman@gmail.com',
+      password: 'password',
     });
     const token = login.body.accessToken;
     const res = await testBase
       .put(`/crop/${cropId}`)
-      .set("Authorization", token)
+      .set('Authorization', token)
       .send(req);
     expect(res.status).toBe(200);
-    expect(res.body.message).toBe("Crop Updated!");
+    expect(res.body.message).toBe('Crop Updated!');
   }, 10000);
 
   it("Shouldn't delete a crop that doesn't exist", async () => {
-    const login = await testBase.post("/auth/signin").send({
-      email: "userman@gmail.com",
-      password: "password",
+    const login = await testBase.post('/auth/signin').send({
+      email: 'userman@gmail.com',
+      password: 'password',
     });
     const token = login.body.accessToken;
     const res = await testBase
       .delete(`/crop/642fe58fd2acc14754dee091`)
-      .set("Authorization", token)
+      .set('Authorization', token)
       .send(req);
     expect(res.status).toBe(400);
-    expect(res.body.message).toBe("No crop Found");
+    expect(res.body.message).toBe('No crop Found');
   }, 10000);
 
-  it("Should delete a crop that  exists", async () => {
-    const login = await testBase.post("/auth/signin").send({
-      email: "userman@gmail.com",
-      password: "password",
+  it('Should delete a crop that  exists', async () => {
+    const login = await testBase.post('/auth/signin').send({
+      email: 'userman@gmail.com',
+      password: 'password',
     });
     const token = login.body.accessToken;
     const res = await testBase
       .delete(`/crop/${cropId}`)
-      .set("Authorization", token)
+      .set('Authorization', token)
       .send(req);
     expect(res.status).toBe(200);
-    expect(res.body.message).toBe("Crop deleted!");
+    expect(res.body.message).toBe('Crop deleted!');
   }, 10000);
 });

@@ -1,16 +1,18 @@
-import { v4 as uuidv4 } from "uuid";
-import Crop from "../model/Crop";
+import { v4 as uuidv4 } from 'uuid';
+import Crop from '../model/Crop';
+// import User from "../model/User";
 
 class cropController {
   static async getCrops(req, res) {
     try {
-      const crops = await Crop.find();
+      const crops = await Crop.find().populate('userId');
 
-      if (crops.length !== 1) {
-        return res.status(400).json({ message: "No Crop Found" });
+      if (crops.length === 0) {
+        return res.status(404).json({ message: 'No Crops Found' });
       }
+
       return res.status(200).json({
-        message: "Expected Crops",
+        message: 'Expected Crops',
         crops,
       });
     } catch (error) {
@@ -23,16 +25,16 @@ class cropController {
   static async getCrop(req, res) {
     try {
       const { id } = req.params;
-      const foundCrop = await Crop.findById({ _id: id });
+      const foundCrop = await Crop.findById(id).populate('userId');
 
       if (!foundCrop) {
         return res.status(400).json({
-          message: "Crop not found in the database",
+          message: 'Crop not found in the database',
         });
       }
 
       return res.status(200).json({
-        message: "Crop Found!",
+        message: 'Crop Found!',
         foundCrop,
       });
     } catch (error) {
@@ -41,20 +43,19 @@ class cropController {
       });
     }
   }
+
   static async postCrop(req, res) {
     try {
-      const { _id } = req.user;
       const { cropType, season, acreage, expectedYields } = req.body;
 
       if (!cropType || !season || !acreage || !expectedYields) {
         return res.status(422).json({
-          message: "Please fillout all the required Fields",
+          message: 'Please fillout all the required Fields',
         });
       }
 
       const crop = await Crop.create({
-        id: uuidv4(),
-        userId: _id,
+        cropId: uuidv4(),
         cropType,
         season,
         acreage,
@@ -62,7 +63,7 @@ class cropController {
       });
 
       return res.status(201).json({
-        message: "Crop Added to the DataBase!",
+        message: 'Crop Added to the DataBase!',
         crop,
       });
     } catch (error) {
@@ -77,11 +78,11 @@ class cropController {
       const { id } = req.params;
       const { cropType, season, acreage, expectedYields } = req.body;
 
-      const foundCrop = await Crop.findById({ _id: id });
+      const foundCrop = await Crop.findById({ cropId: id });
 
       if (!foundCrop) {
         return res.status(400).json({
-          message: "Crop Not found",
+          message: 'Crop Not found',
         });
       }
 
@@ -99,7 +100,7 @@ class cropController {
       );
 
       return res.status(200).json({
-        message: "Crop Updated!",
+        message: 'Crop Updated!',
         newCrop,
       });
     } catch (error) {
@@ -116,13 +117,13 @@ class cropController {
 
       if (!foundCrop) {
         return res.status(400).json({
-          message: "No crop Found",
+          message: 'No crop Found',
         });
       }
 
-      await Crop.deleteOne({ _id: id });
+      await Crop.deleteOne({ cropId: id });
       return res.status(200).json({
-        message: "Crop deleted!",
+        message: 'Crop deleted!',
       });
     } catch (error) {
       res.status(500).json({

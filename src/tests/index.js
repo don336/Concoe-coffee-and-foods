@@ -1,7 +1,7 @@
-import request from "supertest";
-import app from "../app";
+import request from 'supertest';
+import app from '../app';
 
-const version = "/api/v1";
+const version = '/api/v1';
 const appInstance = request(app);
 export default class testBase {
   static post(url) {

@@ -1,6 +1,10 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const customerSchema = new mongoose.Schema({
+  customerId: {
+    type: String,
+    required: true,
+  },
   name: {
     type: String,
     required: true,
@@ -22,4 +26,4 @@ const customerSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model("Customers", customerSchema);
+export default mongoose.model('Customers', customerSchema);
