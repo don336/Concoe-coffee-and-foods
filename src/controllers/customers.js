@@ -73,7 +73,7 @@ class customerController {
       const { id } = req.params;
       const { name, email, dateOfBirth } = req.body;
 
-      const newCustomer = await Customers.findByIdAndUpdate(
+      const newCustomer = await Customers.findOneAndUpdate(
         { customerId: id },
         {
           $set: {
@@ -100,7 +100,7 @@ class customerController {
   static async deleteCustomer(req, res) {
     try {
       const { id } = req.params;
-      const customer = await Customers.findById({ _id: id });
+      const customer = await Customers.findOne({ customerId: id });
 
       if (!customer) {
         return res.status(400).json({

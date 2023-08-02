@@ -5,7 +5,7 @@ class SalesController {
   static async getSales(req, res) {
     try {
       const foundSales = await Sales.find().populate({
-        path: 'name',
+        path: 'customerId',
         model: 'Customers',
       });
 
