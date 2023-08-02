@@ -1,10 +1,11 @@
 import Sales from '../model/Sales';
+import Customers from '../model/Customers';
 import { v4 as uuidv4 } from 'uuid';
 class SalesController {
   static async getSales(req, res) {
     try {
       const foundSales = await Sales.find().populate({
-        path: 'customerId',
+        path: 'name',
         model: 'Customers',
       });
 
@@ -44,10 +45,16 @@ class SalesController {
   }
 
   static async postSale(req, res) {
-    try {
-      const { orderNumber, customerName, products } = req.body;
+    const custId = req.params.customerId;
+    const customer = await Customers.findOne({ customerId: custId });
 
-      if (!orderNumber || !customerName || !products) {
+    if (!customer) {
+      return res.status(400).json('Not a registered customer');
+    }
+    try {
+      const { orderNumber, products } = req.body;
+
+      if (!orderNumber || !products) {
         return res.status(409).json({
           message: 'All fields are required',
         });
@@ -74,7 +81,8 @@ class SalesController {
       const sale = await Sales.create({
         saleId: uuidv4(),
         orderNumber,
-        customerName,
+
+        customerId: custId,
         products: validProducts,
         totalAmount: validAmount,
       });
@@ -92,6 +100,12 @@ class SalesController {
   }
 
   static async updateSale(req, res) {
+    const custId = req.params.customerId;
+    const customer = await Customers.findOne({ customerId: custId });
+
+    if (!customer) {
+      return res.status(400).json('Not a registered customer');
+    }
     try {
       const { id } = req.params;
 
@@ -101,16 +115,15 @@ class SalesController {
         return res.status(400).json({ message: 'Sale Not Found' });
       }
 
-      const { orderNumber, customerName, products, totalAmount } = req.body;
+      const { orderNumber, products, totalAmount } = req.body;
 
-      if (!orderNumber && !customerName && !products && !totalAmount) {
+      if (!orderNumber && !products && !totalAmount) {
         return res.status(409).json({
           message: 'No valid update data',
         });
       }
 
       if (orderNumber) sale.orderNumber = orderNumber;
-      if (customerName) sale.customerName = customerName;
 
       if (products && Array.isArray(products)) {
         const validProducts = [];
@@ -137,7 +150,6 @@ class SalesController {
         sale.products = validProducts;
         sale.totalAmount = validAmount;
       }
-
       const updatedSale = await sale.save();
 
       return res.status(200).json({
@@ -153,6 +165,12 @@ class SalesController {
   }
 
   static async deleteSale(req, res) {
+    const custId = req.params.customerId;
+    const customer = await Customers.findOne({ customerId: custId });
+
+    if (!customer) {
+      return res.status(400).json('Not a registered customer');
+    }
     try {
       const { id } = req.params;
 

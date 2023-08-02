@@ -1,6 +1,5 @@
-import mongoose from 'mongoose';
-// import { Schema } from 'mongoose';
-const salesSchema = new mongoose.Schema({
+import { Schema, model } from 'mongoose';
+const salesSchema = new Schema({
   saleId: {
     type: String,
     required: true,
@@ -10,11 +9,11 @@ const salesSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  // customerId: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: "Customers",
-  //   required: true,
-  // },
+  customerId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
   products: [
     {
       name: String,
@@ -33,4 +32,4 @@ const salesSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model('Sales', salesSchema);
+export default model('Sales', salesSchema);
