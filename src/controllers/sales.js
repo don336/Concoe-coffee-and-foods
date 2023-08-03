@@ -45,8 +45,8 @@ class SalesController {
   }
 
   static async postSale(req, res) {
-    const custId = req.params.customerId;
-    const customer = await Customers.findOne({ customerId: custId });
+    const { id } = req.params;
+    const customer = await Customers.findOne({ _id: id });
 
     if (!customer) {
       return res.status(400).json('Not a registered customer');
