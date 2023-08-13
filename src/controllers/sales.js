@@ -1,6 +1,7 @@
 import Sales from '../model/Sales';
 import Customers from '../model/Customers';
 import { v4 as uuidv4 } from 'uuid';
+import mongoose from 'mongoose';
 class SalesController {
   static async getSales(req, res) {
     try {
@@ -45,13 +46,16 @@ class SalesController {
   }
 
   static async postSale(req, res) {
-    const { id } = req.params;
-    const customer = await Customers.findOne({ _id: id });
-
-    if (!customer) {
-      return res.status(400).json('Not a registered customer');
-    }
     try {
+      const { customerId } = req.params;
+
+      const customer = await Customers.findOne({
+        customerId,
+      });
+
+      if (!customer) {
+        return res.status(400).json('Not a registered customer');
+      }
       const { orderNumber, products } = req.body;
 
       if (!orderNumber || !products) {
@@ -77,12 +81,18 @@ class SalesController {
       const validAmount = validProducts.reduce((sum, product) => {
         return sum + product.price * product.quantity;
       }, 0);
+      const funcToId = (id) => {
+        const toId = new mongoose.Types.ObjectId(id);
+
+        return toId;
+      };
+      const customerObjectId = funcToId(customer._id);
 
       const sale = await Sales.create({
         saleId: uuidv4(),
         orderNumber,
 
-        customerId: custId,
+        customerId: customerObjectId,
         products: validProducts,
         totalAmount: validAmount,
       });
