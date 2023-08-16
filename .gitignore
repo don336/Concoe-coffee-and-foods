@@ -3,3 +3,5 @@
 node_modules
 config/dev.env
 coverage
+src/routes
+src/controllers
