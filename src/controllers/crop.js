@@ -78,12 +78,10 @@ class cropController {
       const { id } = req.params;
       const { cropType, season, acreage, expectedYields } = req.body;
 
-      const foundCrop = await Crop.findById({ cropId: id });
+      const foundCrop = await Crop.findById({ _id: id });
 
       if (!foundCrop) {
-        return res.status(400).json({
-          message: 'Crop Not found',
-        });
+        throw new Error('Crop Not Found');
       }
 
       const newCrop = await Crop.findByIdAndUpdate(

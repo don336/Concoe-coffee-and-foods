@@ -1,7 +1,8 @@
+import { v4 as uuidv4 } from 'uuid';
 import Sales from '../model/Sales';
 import Customers from '../model/Customers';
-import { v4 as uuidv4 } from 'uuid';
-import mongoose from 'mongoose';
+import { funcToId } from '../utils/objectId';
+
 class SalesController {
   static async getSales(req, res) {
     try {
@@ -81,11 +82,7 @@ class SalesController {
       const validAmount = validProducts.reduce((sum, product) => {
         return sum + product.price * product.quantity;
       }, 0);
-      const funcToId = (id) => {
-        const toId = new mongoose.Types.ObjectId(id);
 
-        return toId;
-      };
       const customerObjectId = funcToId(customer._id);
 
       const sale = await Sales.create({
