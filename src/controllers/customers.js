@@ -47,7 +47,7 @@ class customerController {
     try {
       const { name, email, dateOfBirth } = req.body;
       if (!name || !email || !dateOfBirth) {
-        return res.status(401).json({ message: 'All fields required' });
+        return res.status(422).json({ message: 'All fields required' });
       }
       const customer = await Customers.create({
         customerId: uuidv4(),

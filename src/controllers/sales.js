@@ -59,8 +59,8 @@ class SalesController {
       }
       const { orderNumber, products } = req.body;
 
-      if (!orderNumber || !products) {
-        return res.status(409).json({
+      if (!products) {
+        return res.status(422).json({
           message: 'All fields are required',
         });
       }
@@ -84,7 +84,6 @@ class SalesController {
       }, 0);
 
       const customerObjectId = funcToId(customer._id);
-
       const sale = await Sales.create({
         saleId: uuidv4(),
         orderNumber,
