@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+
 const salesSchema = new Schema({
   saleId: {
     type: String,
@@ -6,8 +7,8 @@ const salesSchema = new Schema({
   },
   orderNumber: {
     type: String,
-    required: true,
-    unique: true,
+
+    unique: true, // Ensure order numbers are unique
   },
   customerId: {
     type: Schema.Types.ObjectId,
@@ -30,6 +31,22 @@ const salesSchema = new Schema({
     default: Date.now,
     immutable: true,
   },
+});
+
+// Define a pre-save middleware to automatically generate the orderNumber
+salesSchema.pre('save', async function (next) {
+  if (!this.isNew) {
+    return next(); // If not a new document, move on
+  }
+
+  try {
+    // Generate the orderNumber based on your logic (e.g., current timestamp)
+    const currentTimestamp = Date.now().toString();
+    this.orderNumber = `ORD-${currentTimestamp}`;
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 export default model('Sales', salesSchema);
