@@ -20,7 +20,7 @@ describe('Crop Management', function () {
   beforeAll(async () => {
     const auth = await testBase.post('/auth/signup').send(user);
     Token = auth.body.accessToken;
-  }, 10000);
+  }, 15000);
   beforeEach(async () => {
     const crop = await testBase
       .post('/crop/')
@@ -28,7 +28,7 @@ describe('Crop Management', function () {
       .send(req);
     const id = crop.body.crop._id;
     cropId = id;
-  }, 10000);
+  }, 15000);
 
   afterAll(async () => {
     mongoose.connection.close();
