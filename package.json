@@ -11,7 +11,7 @@
     "prettier:check": "prettier --check .",
     "prettier": "prettier --write .",
     "dev": "env-cmd -f ./config/dev.env nodemon --exec babel-node src/index.js",
-    "test": "env-cmd -f ./config/test.env jest --runInBand --verbose --coverage --force-exit src/tests/auth.test.js src/tests/crop.test.js src/tests/customer.test.js src/tests/sales.test.js",
+    "test": "env-cmd -f ./config/test.env jest --runInBand --verbose --coverage --force-exit src/tests/auth.test.js src/tests/crop.test.js src/tests/customer.test.js src/tests/sales.test.js src/tests/stock.test.js",
     "prepare": "husky install"
   },
   "repository": {

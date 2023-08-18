@@ -114,7 +114,7 @@ describe('Sales Management', function () {
     expect(res.body.message).toBe('No valid update data');
   }, 10000);
 
-  it('Should update a customer that exist', async () => {
+  it('Should update a sale that exist', async () => {
     const res = await testBase
       .put(`/sales/${customerId}/${saleId}`)
       .set('Authorization', Token)
