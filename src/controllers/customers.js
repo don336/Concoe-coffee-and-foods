@@ -45,13 +45,15 @@ class customerController {
 
   static async postCustomer(req, res) {
     try {
-      const { name, email, dateOfBirth } = req.body;
-      if (!name || !email || !dateOfBirth) {
+      const { firstname, lastname, phone, email, dateOfBirth } = req.body;
+      if (!firstname || !lastname || !phone || !email || !dateOfBirth) {
         return res.status(422).json({ message: 'All fields required' });
       }
       const customer = await Customers.create({
         customerId: uuidv4(),
-        name,
+        firstname,
+        lastname,
+        phone,
         email,
         dateOfBirth,
       });
@@ -71,13 +73,17 @@ class customerController {
   static async updateCustomer(req, res) {
     try {
       const { id } = req.params;
-      const { name, email, dateOfBirth } = req.body;
-
+      const { firstname, lastname, phone, email, dateOfBirth } = req.body;
+      if (!firstname && !lastname && !phone && !email && !dateOfBirth) {
+        throw new Error('At least a field is required to perform the update');
+      }
       const newCustomer = await Customers.findOneAndUpdate(
         { customerId: id },
         {
           $set: {
-            name,
+            firstname,
+            lastname,
+            phone,
             email,
             dateOfBirth,
           },

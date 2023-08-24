@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/don336/Concoe-coffee-and-foods#readme",
   "dependencies": {
+    "@material-ui/core": "^4.12.4",
     "bcrypt": "^5.1.0",
     "celebrate": "^15.0.1",
     "cors": "^2.8.5",

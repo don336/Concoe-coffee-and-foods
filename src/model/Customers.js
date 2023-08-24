@@ -5,7 +5,11 @@ const customerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  name: {
+  firstname: {
+    type: String,
+    required: true,
+  },
+  lastname: {
     type: String,
     required: true,
   },
@@ -15,6 +19,10 @@ const customerSchema = new mongoose.Schema({
     unique: true,
     trim: true,
     lowercase: true,
+  },
+  phone: {
+    type: String,
+    required: true,
   },
   dateOfBirth: {
     type: Date,
