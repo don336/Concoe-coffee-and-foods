@@ -9,7 +9,7 @@ describe('User Auth', function () {
 
   beforeEach(async function () {
     await createUsers();
-  });
+  }, 10000);
 
   afterEach(async function () {
     await deleteUsers();
