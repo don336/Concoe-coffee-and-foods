@@ -24,7 +24,6 @@ class customerController {
   static async getCustomer(req, res) {
     try {
       const { id } = req.params;
-      console.log(id);
       const customer = await Customers.findOne({ customerId: id });
 
       if (!customer) {

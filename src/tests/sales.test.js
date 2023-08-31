@@ -19,8 +19,10 @@ describe('Sales Management', function () {
     password: 'password',
   };
   const cust = {
-    name: 'John Doe',
-    email: 'jdoe@gmail.com',
+    firstname: 'John ',
+    lastname: ' Doe',
+    phone: '+25678690389',
+    email: 'jdoe90000@gmail.com',
     dateOfBirth: '1/10/2012',
   };
   let customerId;
