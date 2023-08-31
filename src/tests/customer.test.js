@@ -3,7 +3,9 @@ import testBase from './index';
 
 describe('Customer Management', function () {
   const req = {
-    name: 'customer1',
+    firstname: 'customer1',
+    lastname: 'John Doe',
+    phone: '+25678690389',
     email: 'cust223@gmail.com',
     dateOfBirth: '10/1/2023',
   };
@@ -24,10 +26,9 @@ describe('Customer Management', function () {
       .post('/customers/')
       .set('Authorization', Token)
       .send(req);
-    console.log(customer.body, '===============>');
     const id = customer.body.customer.customerId;
     customerId = id;
-  }, 10000);
+  }, 15000);
 
   afterAll(async () => {
     mongoose.connection.close();
@@ -81,7 +82,9 @@ describe('Customer Management', function () {
       .post('/customers/')
       .set('Authorization', Token)
       .send({
-        name: 'breaker',
+        firstname: 'Breker',
+        lastname: 'John Doe',
+        phone: '+25678690389',
         email: 'brek@gmail.com',
         dateOfBirth: '1/10/2021',
       });

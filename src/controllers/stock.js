@@ -100,7 +100,11 @@ class stockController {
   static async deletestock(req, res) {
     try {
       const { id } = req.params;
+      const stock = await Stock.findOne({ _id: id });
 
+      if (!stock) {
+        throw new Error('Stock not found');
+      }
       const deleteStock = await Stock.findOneAndDelete({ _id: id });
 
       return res

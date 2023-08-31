@@ -1,8 +1,6 @@
 import mongoose from 'mongoose';
 import testBase from './index';
-import Sales from '../model/Sales';
-import Customers from '../model/Customers';
-import user from '../model/user';
+
 describe('Sales Management', function () {
   const sale = {
     products: [
@@ -21,8 +19,10 @@ describe('Sales Management', function () {
     password: 'password',
   };
   const cust = {
-    name: 'John Doe',
-    email: 'jdoe@gmail.com',
+    firstname: 'John ',
+    lastname: ' Doe',
+    phone: '+25678690389',
+    email: 'jdoe90000@gmail.com',
     dateOfBirth: '1/10/2012',
   };
   let customerId;
@@ -45,13 +45,9 @@ describe('Sales Management', function () {
       .set('Authorization', Token)
       .send(sale);
     saleId = newsale.body.sale._id;
-
-    console.log(saleId, customerId, '====================================>');
-  }, 10000);
+  }, 15000);
 
   afterAll(async () => {
-    await Sales.deleteMany({});
-    await Customers.deleteMany({});
     mongoose.connection.close();
   }, 10000);
 
@@ -120,7 +116,7 @@ describe('Sales Management', function () {
     expect(res.body.message).toBe('No valid update data');
   }, 10000);
 
-  it('Should update a customer that exist', async () => {
+  it('Should update a sale that exist', async () => {
     const res = await testBase
       .put(`/sales/${customerId}/${saleId}`)
       .set('Authorization', Token)
