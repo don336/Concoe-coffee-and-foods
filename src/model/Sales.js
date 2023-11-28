@@ -7,7 +7,6 @@ const salesSchema = new Schema({
   },
   orderNumber: {
     type: String,
-
     unique: true, // Ensure order numbers are unique
   },
   customerId: {
@@ -15,13 +14,20 @@ const salesSchema = new Schema({
     ref: 'User',
     required: true,
   },
-  products: [
-    {
-      name: String,
-      quantity: Number,
-      price: Number,
-    },
-  ],
+  name: {
+    type: String,
+    required: true,
+  },
+
+  quantity: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: String,
+    required: true,
+  },
+
   totalAmount: {
     type: Number,
     required: true,

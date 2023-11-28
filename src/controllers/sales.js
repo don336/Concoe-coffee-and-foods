@@ -57,40 +57,27 @@ class SalesController {
       if (!customer) {
         return res.status(400).json('Not a registered customer');
       }
-      const { orderNumber, products } = req.body;
+      const { orderNumber, name, price, quantity } = req.body;
 
-      if (!products) {
+      if (!name || !price || !quantity) {
         return res.status(422).json({
           message: 'All fields are required',
         });
       }
 
-      const validProducts = products.map((product) => {
-        const { name, price, quantity } = product;
-
-        if (!name || !price || !quantity) {
-          throw new Error('All fields are required');
-        }
-
-        return {
-          name,
-          quantity,
-          price,
-        };
-      });
-
-      const validAmount = validProducts.reduce((sum, product) => {
-        return sum + product.price * product.quantity;
-      }, 0);
+      const validAmount = (price, quality) => {
+        return price * quantity;
+      };
 
       const customerObjectId = funcToId(customer._id);
       const sale = await Sales.create({
         saleId: uuidv4(),
         orderNumber,
-
         customerId: customerObjectId,
-        products: validProducts,
-        totalAmount: validAmount,
+        name,
+        price,
+        quantity,
+        totalAmount: validAmount(price, quantity),
       });
 
       return res.status(201).json({
@@ -121,42 +108,24 @@ class SalesController {
         return res.status(400).json({ message: 'Sale Not Found' });
       }
 
-      const { orderNumber, products, totalAmount } = req.body;
+      const { name, price, quantity } = req.body;
 
-      if (!orderNumber && !products && !totalAmount) {
+      if (!name && !price && !quantity) {
         return res.status(409).json({
           message: 'No valid update data',
         });
       }
-
-      if (orderNumber) sale.orderNumber = orderNumber;
-
-      if (products && Array.isArray(products)) {
-        const validProducts = [];
-        let validAmount = 0;
-
-        for (const product of products) {
-          const { name, price, quantity } = product;
-
-          if (!name || !price || !quantity) {
-            return res.status(409).json({
-              message: 'All fields are required',
-            });
-          }
-
-          validProducts.push({
+      const updatedSale = await Sales.findByIdAndUpdate(
+        { _id: id },
+        {
+          $set: {
             name,
-            quantity,
             price,
-          });
-
-          validAmount += price * quantity;
-        }
-
-        sale.products = validProducts;
-        sale.totalAmount = validAmount;
-      }
-      const updatedSale = await sale.save();
+            quantity,
+          },
+        },
+        { new: true }
+      );
 
       return res.status(200).json({
         message: 'Sale Updated',
