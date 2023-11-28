@@ -39,6 +39,7 @@
     "uuidv4": "^6.2.13"
   },
   "devDependencies": {
+    "cors": "^2.8.5",
     "@babel/cli": "^7.21.0",
     "@babel/core": "^7.21.3",
     "@babel/eslint-parser": "^7.22.9",
