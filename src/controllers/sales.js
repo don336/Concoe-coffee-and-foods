@@ -57,40 +57,15 @@ class SalesController {
       if (!customer) {
         return res.status(400).json('Not a registered customer');
       }
-      const { orderNumber, products } = req.body;
-
-      if (!products) {
-        return res.status(422).json({
-          message: 'All fields are required',
-        });
-      }
-
-      const validProducts = products.map((product) => {
-        const { name, price, quantity } = product;
-
-        if (!name || !price || !quantity) {
-          throw new Error('All fields are required');
-        }
-
-        return {
-          name,
-          quantity,
-          price,
-        };
-      });
-
-      const validAmount = validProducts.reduce((sum, product) => {
-        return sum + product.price * product.quantity;
-      }, 0);
+      const { name, quantity, price } = req.body;
 
       const customerObjectId = funcToId(customer._id);
       const sale = await Sales.create({
         saleId: uuidv4(),
-        orderNumber,
-
         customerId: customerObjectId,
-        products: validProducts,
-        totalAmount: validAmount,
+        name,
+        quantity,
+        price,
       });
 
       return res.status(201).json({
@@ -171,12 +146,6 @@ class SalesController {
   }
 
   static async deleteSale(req, res) {
-    const custId = req.params.customerId;
-    const customer = await Customers.findOne({ customerId: custId });
-
-    if (!customer) {
-      return res.status(400).json('Not a registered customer');
-    }
     try {
       const { id } = req.params;
 
