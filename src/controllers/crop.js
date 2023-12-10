@@ -115,17 +115,17 @@ class cropController {
 
       if (!foundCrop) {
         return res.status(400).json({
-          message: 'No crop Found',
+          message: 'No crop found',
         });
       }
 
-      await Crop.deleteOne({ cropId: id });
+      await Crop.deleteOne({ _id: id }); // Use _id instead of cropId
       return res.status(200).json({
         message: 'Crop deleted!',
       });
     } catch (error) {
       res.status(500).json({
-        Error: error.message,
+        error: error.message,
       });
     }
   }
