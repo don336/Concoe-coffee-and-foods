@@ -69,6 +69,7 @@ class UserController {
       }
 
       const existingUser = await User.findOne({ email });
+      console.log(existingUser);
 
       if (!existingUser) {
         return res.status(400).json({
@@ -86,7 +87,7 @@ class UserController {
 
       const accessToken = await Jwt.sign(
         {
-          userId: existingUser.userId,
+          _id: existingUser._id,
           name: existingUser.name,
           email: existingUser.email,
           username: existingUser.username,
@@ -96,13 +97,12 @@ class UserController {
 
       res.cookie('token', accessToken, { expire: new Date() + 1 });
 
-      const { userId, username } = existingUser;
+      const { username } = existingUser;
 
       return res.status(201).json({
         message: "You're logged in",
         accessToken,
         user: {
-          userId,
           username,
           email,
         },
@@ -117,7 +117,7 @@ class UserController {
   static async getAccountInfo(req, res) {
     try {
       const { id } = req.params;
-      const user = await User.findById({ userId: id });
+      const user = await User.findById({ _id: id });
 
       if (!user) {
         return res.status(400).json({
@@ -145,7 +145,7 @@ class UserController {
 
   static async updateAccountInfo(req, res) {
     const { id } = req.params;
-    const user = await User.findById({ userId: id });
+    const user = await User.findById({ _id: id });
     if (!user) {
       return res.status(400).json({
         message: 'User not Found',
@@ -156,7 +156,7 @@ class UserController {
       const { name, username, email, password } = req.body;
 
       const updatedUser = await User.findByIdAndUpdate(
-        { userId: id },
+        { _id: id },
         {
           $set: {
             name,
@@ -181,7 +181,7 @@ class UserController {
   }
   static async deleteAccount(req, res) {
     const { id } = req.params;
-    const user = await User.findById({ userId: id });
+    const user = await User.findById({ _id: id });
     if (!user) {
       return res.status(400).json({
         message: 'User not Found',
