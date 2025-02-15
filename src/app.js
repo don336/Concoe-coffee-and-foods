@@ -6,6 +6,7 @@ import routes from './routes/index';
 connect();
 const app = express();
 app.use(cors());
+
 app.use(express.json());
 app.use(errors());
 app.use(routes);
